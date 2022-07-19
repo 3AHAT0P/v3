@@ -1,0 +1,6 @@
+export interface LoggerTransport {
+  info(message: string, ...optionalParams: any[]): void;
+  warn(message: string, ...optionalParams: any[]): void;
+  error(message: string, ...optionalParams: any[]): void;
+  destroy(): void;
+}

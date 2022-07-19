@@ -1,0 +1,5 @@
+WARN => [2022-07-19T17:54:46.827Z] AMQPAdapter::_waitAMQPConnection | Retries left: 5
+INFO => [2022-07-19T17:54:56.884Z] AMQPAdapter::_waitAMQPConnection | Connected!
+INFO => [2022-07-19T17:54:56.893Z] main |  [*] Waiting for messages. To exit press CTRL+C
+INFO => [2022-07-19T17:54:56.893Z] main::finally | FINAL!
+INFO => [2022-07-19T17:54:58.194Z] onActionFromClientRecieve |  [x] Received '%s'	{"sessionId":"123","messageType":"FROM_CLIENT","message":{"action":"SOME_ACTION"}}

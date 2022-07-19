@@ -1,0 +1,32 @@
+{
+  "name": "@text-game/shared",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    "./AMQP": "./src/AMQP/index.ts",
+    "./APIGatewayShared": "./src/APIGatewayShared/index.ts",
+    "./Main": "./src/Main/index.ts",
+    "./Logger": "./src/utils/Logger/index.ts",
+    "./DIContainer": "./src/utils/DIContainer.ts",
+    "./sleep": "./src/utils/sleep.ts",
+    "./package.json": "./package.json"
+  },  
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/amqplib": "^0.8.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.0"
+  }
+}
