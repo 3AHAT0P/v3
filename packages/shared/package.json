@@ -2,31 +2,66 @@
   "name": "@text-game/shared",
   "version": "1.0.0",
   "description": "",
+  "type": "commonjs",
   "exports": {
-    "./AMQP": "./src/AMQP/index.ts",
-    "./APIGatewayShared": "./src/APIGatewayShared/index.ts",
-    "./Main": "./src/Main/index.ts",
-    "./Logger": "./src/utils/Logger/index.ts",
-    "./DIContainer": "./src/utils/DIContainer.ts",
-    "./sleep": "./src/utils/sleep.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "node": "./dist-node/index.js"
+    },
+    "./AMQP": {
+      "types": "./dist/AMQP/index.d.ts",
+      "import": "./dist/AMQP/index.js",
+      "node": "./dist-node/AMQP/index.js"
+    },
+    "./APIGatewayShared": {
+      "types": "./dist/APIGatewayShared/index.d.ts",
+      "import": "./dist/APIGatewayShared/index.js",
+      "node": "./dist-node/APIGatewayShared/index.js"
+    },
+    "./Main": {
+      "types": "./dist/Main/index.d.ts",
+      "import": "./dist/Main/index.js",
+      "node": "./dist-node/Main/index.js"
+    },
+    "./Logger": {
+      "types": "./dist/utils/Logger/index.d.ts",
+      "import": "./dist/utils/Logger/index.js",
+      "node": "./dist-node/utils/Logger/index.js"
+    },
+    "./DIContainer": {
+      "types": "./dist/utils/DIContainer.d.ts",
+      "import": "./dist/utils/DIContainer.js",
+      "node": "./dist-node/utils/DIContainer.js"
+    },
+    "./sleep": {
+      "types": "./dist/utils/sleep.d.ts",
+      "import": "./dist/utils/sleep.js",
+      "node": "./dist-node/utils/sleep.js"
+    },
     "./package.json": "./package.json"
-  },  
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
       "*": [
-        "./src/*.ts"
+        "./dist/*.d.ts"
       ]
     }
   },
   "scripts": {
+    "compile:dev": "concurrently --kill-others \"tsc-watch -p tsconfig.json\" \"tsc-watch -p tsconfig.node.json\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/amqplib": "^0.8.2"
+    "@types/amqplib": "^0.8.2",
+    "concurrently": "^7.3.0"
   },
   "dependencies": {
-    "amqplib": "^0.10.0"
+    "amqplib": "^0.10.0",
+    "tsc-watch": "^5.0.3"
   }
 }

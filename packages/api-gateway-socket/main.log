@@ -1,4 +1,2 @@
-WARN => [2022-07-19T17:54:47.130Z] AMQPAdapter::_waitAMQPConnection | Retries left: 5
-INFO => [2022-07-19T17:54:57.183Z] AMQPAdapter::_waitAMQPConnection | Connected!
-INFO => [2022-07-19T17:54:57.187Z] main::finally | FINAL!
-INFO => [2022-07-19T17:54:58.191Z] sendMessage |  [x] Sent '%s'	{"sessionId":"123","messageType":"FROM_CLIENT","message":{"action":"SOME_ACTION"}}	true
+INFO => [2022-07-22T22:24:42.287Z] AMQPAdapter::_waitAMQPConnection | Connected!
+INFO => [2022-07-22T22:24:42.293Z] main::finally | FINAL!
