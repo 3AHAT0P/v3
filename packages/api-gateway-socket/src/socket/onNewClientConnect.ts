@@ -1,23 +1,20 @@
 import { ActionFromClient, ActionToClient } from '@text-game/shared/APIGatewayShared';
-import { inject } from '@text-game/shared/DIContainer';
 import { logerror, loginfo, logwarn } from '@text-game/shared/Logger';
-import { Server, Socket } from 'socket.io';
-import { v4 as uuidv4 } from 'uuid';
+import { Socket } from 'socket.io';
 
 import {
   deleteSessionQueue,
   sendFromClientMessageToMain, sendSystemMessageToMain,
   subscribeToClientMessageFromMain,
-} from './InternalTransport';
-import { configInjectionToken } from './providers/config';
+} from '../InternalTransport';
 
-export interface ClientConnection {
+interface ClientConnection {
   socket: Socket;
 }
 
 const clients: Map<string, ClientConnection> = new Map();
 
-const onNewClientConnect = async (socket: Socket) => {
+export const onNewClientConnect = async (socket: Socket) => {
   const sessionId = socket.id;
   clients.set(sessionId, { socket });
 
@@ -47,19 +44,4 @@ const onNewClientConnect = async (socket: Socket) => {
       logerror('Socket::disconnect', error);
     }
   });
-};
-
-export const listen = () => {
-  const config = inject(configInjectionToken);
-  const transport: Server = new Server({
-    serveClient: false,
-    cors: {
-      origin: config.clientLocation,
-    },
-  });
-
-  transport.on('connection', onNewClientConnect);
-
-  transport.listen(config.wsPort);
-  transport.engine.generateId = () => uuidv4();
 };

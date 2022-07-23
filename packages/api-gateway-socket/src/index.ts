@@ -1,28 +1,19 @@
-import { inject } from '@text-game/shared/DIContainer';
 import { loginfo, logerror } from '@text-game/shared/Logger';
 
-import { initAMQPProvider, initConfigProvider } from './providers/index';
-import { amqpAdapterInjectionToken } from './providers/amqp';
-import { configInjectionToken } from './providers/config';
+import { initProviders } from './providers/index';
 
-import { listen } from './socket';
+import { runSocketServer } from './socket';
+import { onExit } from './onExit';
 
 const main = async () => {
   try {
-    initConfigProvider();
-    const config = inject(configInjectionToken);
-    await initAMQPProvider(config.messageBrokerPath);
+    await initProviders();
 
-    listen();
+    runSocketServer();
 
-    process.on('exit', (code) => {
-      const adapter = inject(amqpAdapterInjectionToken);
-      adapter.destructor().catch((error) => logerror('PROCESS::EXIT', error));
-      loginfo('PROCESS::EXIT', 'Process exit event with code: ', code);
-    });
+    process.on('exit', onExit);
   } catch (error) {
     logerror('main::catch', error);
-    throw new Error('!');
   }
 };
 

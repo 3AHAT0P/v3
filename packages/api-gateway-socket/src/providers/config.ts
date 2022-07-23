@@ -1,11 +1,7 @@
 import { provide, InjectionToken } from '@text-game/shared/DIContainer';
-import data from '../../.env.json';
 
-export interface Config {
-  messageBrokerPath: string;
-  wsPort: number;
-  clientLocation: string;
-}
+import type { Config } from '../../.env';
+import data from '../../.env.json';
 
 export const configInjectionToken: InjectionToken<Config> = {
   id: Symbol('Config'),

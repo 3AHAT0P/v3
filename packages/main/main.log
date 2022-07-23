@@ -1,4 +1,0 @@
-INFO => [2022-07-22T21:26:37.246Z] AMQPAdapter::_waitAMQPConnection | Connected!
-INFO => [2022-07-22T21:26:37.250Z] main |  [*] Waiting for messages. To exit press CTRL+C
-INFO => [2022-07-22T21:26:37.250Z] main::finally | FINAL!
-INFO => [2022-07-22T22:19:04.636Z] onActionFromClientRecieve |  [x] Received '%s'	{"sessionId":"123","messageType":"FROM_CLIENT","message":{"action":"SOME_ACTION"}}
