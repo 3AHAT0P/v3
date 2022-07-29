@@ -1,34 +1,22 @@
-import { MessageContainer } from '@text-game/shared/APIGatewayShared';
-import { AMQPAdapter } from '@text-game/shared/AMQP';
 import { loginfo, logerror } from '@text-game/shared/Logger';
 
-interface Config {
-  messageBrokerPath: string;
-}
+import { initProviders } from './providers/index';
 
-const CONFIG: Config = {
-  messageBrokerPath: 'amqp://messagebroker',
-};
+import { run } from './run';
+import { onExit } from './onExit';
 
-const onActionFromClientRecieve = (messageContainer: MessageContainer): void => {
-  loginfo('onActionFromClientRecieve', " [x] Received '%s'", messageContainer);
-};
-
-const main = async (config: Config) => {
+const main = async () => {
   try {
-    const adapter = new AMQPAdapter({ connectionURL: config.messageBrokerPath });
+    process.on('exit', onExit);
 
-    await adapter.init();
+    await initProviders();
 
-    const queueName = 'ACTION_FROM_CLIENT';
-
-    await adapter.consume(queueName, onActionFromClientRecieve, { noAck: true });
+    await run();
 
     loginfo('main', ' [*] Waiting for messages. To exit press CTRL+C');
-  } catch (error) {
+  } catch (error: unknown) {
     logerror('main::catch', error);
-    throw new Error('!');
   }
 };
 
-main(CONFIG).finally(() => loginfo('main::finally', 'FINAL!'));
+main().finally(() => loginfo('main::finally', 'FINAL!'));

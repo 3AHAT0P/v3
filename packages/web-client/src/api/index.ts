@@ -1,4 +1,4 @@
-import { ActionToClient } from '@text-game/shared/index';
+import { ActionFromClient, ActionToClient } from '@text-game/shared/index';
 import io, { Socket } from 'socket.io-client';
 
 import { useSystemMessageStore } from '../store/SystemMessageStore';
@@ -20,10 +20,11 @@ export const createSocketConnection = (url: string = 'ws://localhost:8888') => {
 
   socket.on('SYSTEM', (data: ActionToClient) => {
     console.log('SYSTEM', data);
-    socket.emit('SYSTEM', 'Pong!');
   });
 
   socket.on('MESSAGE', (data: ActionToClient) => {
     systemMessageStore.onMessageFromServer(data);
   });
+
+  systemMessageStore.__sendMessageToServer = (message: ActionFromClient) => { console.log(message); socket.emit('MESSAGE', message); };
 };

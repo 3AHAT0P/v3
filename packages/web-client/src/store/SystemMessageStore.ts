@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ActionToClient } from '@text-game/shared/APIGatewayShared/index';
+import { ActionFromClient, ActionToClient } from '@text-game/shared/APIGatewayShared/index';
 import { UserAction } from '@text-game/shared/Main/Action';
 
 export interface MainState {
@@ -9,10 +9,11 @@ export interface MainState {
 }
 
 export const useSystemMessageStore = defineStore('system-messages', {
-  state: (): MainState => ({
+  state: (): MainState & { __sendMessageToServer(message: ActionFromClient): void } => ({
     messages: [],
     isConnected: false,
     userActLayout: [],
+    __sendMessageToServer() {},
   }),
   getters: {
     lastMessage(state) {
@@ -31,8 +32,9 @@ export const useSystemMessageStore = defineStore('system-messages', {
     onDisconnected() {
       this.isConnected = false;
     },
-    sendMessageToServer() {
+    sendMessageToServer(actionId: ActionFromClient['action']) {
       this.userActLayout = [];
-    }
+      this.__sendMessageToServer({ action: actionId });
+    },
   },
 });

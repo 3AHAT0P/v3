@@ -42,6 +42,7 @@ export class Logger {
 
   private _paramsToText(optionalParams: any[]): string[] {
     return optionalParams.map((item: any) => {
+      if (item instanceof Error) return `${item.toString()}\n${item.stack ?? ''}`;
       if (typeof item === 'object') return JSON.stringify(item);
 
       return item?.toString() ?? 'undefined';

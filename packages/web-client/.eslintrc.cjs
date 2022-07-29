@@ -1,24 +1,32 @@
 module.exports = {
-  root: true,
+  ignorePatterns: ['.eslintrc.cjs'],
+  env: {
+    browser: true,
+    es2021: true,
+  },
   settings: {
     'import/resolver': {
       typescript: {}
     },
   },
-  parser: '@typescript-eslint/parser',
+  extends: [
+    'plugin:vue/essential',
+    'airbnb-base',
+    'plugin:vue/recommended',
+    'airbnb-typescript/base',
+  ],
+  parser: require.resolve('vue-eslint-parser'),
   parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    parser: '@typescript-eslint/parser',
     project: './tsconfig.json',
-    tsconfigRootDir: './packages/api-gateway-socket',
+    extraFileExtensions: ['.vue'],
   },
   plugins: [
+    'vue',
     '@typescript-eslint',
     'import',
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'airbnb-typescript/base',
   ],
   rules: {
     '@typescript-eslint/no-inferrable-types': ['off'],
@@ -47,5 +55,22 @@ module.exports = {
       ignoreStrings: true,
       ignoreTemplateLiterals: true,
     }],
-  }
+    'import/extensions': [
+      'error',
+      {
+        ts: 'never',
+        'd.ts': 'never',
+      },
+    ],
+    'vue/no-v-for-template-key-on-child': ['error'],
+    'vue/no-v-for-template-key': ['off'],
+    'vue/max-attributes-per-line': ['error', {
+      'singleline': {
+        'max': 3
+      },
+      'multiline': {
+        'max': 1
+      }
+    }]
+  },
 };

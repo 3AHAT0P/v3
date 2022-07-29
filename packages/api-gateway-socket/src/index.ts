@@ -7,11 +7,11 @@ import { onExit } from './onExit';
 
 const main = async () => {
   try {
+    process.on('exit', onExit);
+
     await initProviders();
 
     runSocketServer();
-
-    process.on('exit', onExit);
   } catch (error) {
     logerror('main::catch', error);
   }

@@ -1,0 +1,11 @@
+{
+  "eslint.options": {
+    "overrideConfigFile": ".eslintrc.cjs"
+  },
+  "eslint.workingDirectories": [
+    "packages/api-gateway-socket",
+    "packages/main",
+    "packages/shared",
+    "packages/web-client"
+  ]
+}

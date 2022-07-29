@@ -72,11 +72,14 @@ export class AMQPAdapter {
   public async consume(
     queueName: string,
     onMessage: (messageContainer: MessageContainer) => void,
-    options?: amqp.Options.Consume,
+    options: amqp.Options.Consume = { noAck: true },
   ) {
     if (!this._isReady) throw new Error('Adapter is not ready!');
 
     await this._channel.assertQueue(queueName, { durable: false });
+
+    // eslint-disable-next-line no-param-reassign
+    if (!('noAck' in options)) options.noAck = true;
 
     let consumerTag: string | null = null;
 
