@@ -52,6 +52,7 @@
   },
   "scripts": {
     "compile:dev": "concurrently --kill-others \"tsc-watch -p tsconfig.json\" \"tsc-watch -p tsconfig.node.json\"",
+    "compile:dev:log-to-file": "npm run compile:dev 1>main.log 2>&1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

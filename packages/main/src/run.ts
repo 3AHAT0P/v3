@@ -25,6 +25,7 @@ const onConnect = async (clients: Map<ClientRecord['userId'], ClientRecord>, ses
     recievedMessageQueue: createMessageQueue<ActionFromClient>(),
     sendMessage: (message: ActionToClient) => sendMessageToClient(sessionId, message),
     userState: {},
+    currentNode: 'GREETING',
   };
 
   await subscribeMessageFromClient(sessionId, createOnMessageFromClientHandler(userInfo));
@@ -53,19 +54,23 @@ export const run = async () => {
   const clients: Map<ClientRecord['userId'], ClientRecord> = new Map();
 
   await subscribeToSystemMessages(async (sessionId, message) => {
-    switch (message) {
-      case 'CONNECTED': {
-        await onConnect(clients, sessionId);
-        break;
+    try {
+      switch (message) {
+        case 'CONNECTED': {
+          await onConnect(clients, sessionId);
+          break;
+        }
+        case 'DISCONNECTED': {
+          onDisconnect(clients, sessionId);
+          break;
+        }
+        default: {
+          logerror('Run::OnSystemMessage', 'Incorrect message');
+          break;
+        }
       }
-      case 'DISCONNECTED': {
-        onDisconnect(clients, sessionId);
-        break;
-      }
-      default: {
-        logerror('Run::OnSystemMessage', 'Incorrect message');
-        break;
-      }
+    } catch (error) {
+      logerror('Run::OnSystemMessage', sessionId, message, error);
     }
   });
 };

@@ -60,6 +60,45 @@ services:
         - rabbitmq_log:/var/log/rabbitmq
     networks:
       - webnet
+  shared:
+    container_name: strpg_shared
+    build:
+      context: ./packages/shared
+      dockerfile: Dockerfile
+    image: strpg_shared
+    working_dir: /usr/src/app
+    volumes:
+      - ./packages/shared:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    command: npm run compile:dev
+    restart: on-failure
+    environment:
+      NODE_ENV: development
+    networks:
+      - webnet
+    dns:
+      - 8.8.8.8
+  web-client:
+    container_name: strpg_web-client
+    build:
+      context: ./packages/web-client
+      dockerfile: Dockerfile
+    image: strpg_web-client
+    working_dir: /usr/src/app
+    volumes:
+      - ./packages/web-client:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+      - ./packages/shared:/usr/src/app/node_modules/@text-game/shared
+    command: npm run dev
+    restart: on-failure
+    environment:
+      NODE_ENV: development
+    networks:
+      - webnet
+    dns:
+      - 8.8.8.8
+    ports:
+      - 5173
 
   # postgres:
   #   container_name: postgres

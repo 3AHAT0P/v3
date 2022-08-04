@@ -6,7 +6,8 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5173",
+    "dev:log-to-file": "npm run dev 1>main.log 2>&1",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },

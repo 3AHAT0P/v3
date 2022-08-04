@@ -8,4 +8,5 @@ export interface ClientRecord {
   recievedMessageQueue: MessageQueue<ActionFromClient>;
   sendMessage: (message: ActionToClient) => Promise<void>;
   userState: any;
+  currentNode: string;
 }
