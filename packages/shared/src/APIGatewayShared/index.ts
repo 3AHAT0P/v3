@@ -26,3 +26,19 @@ export interface ActionToClient {
   needAnswer: boolean;
   userActLayout: UserAction[][];
 }
+
+// export interface ClientToGatewayDTO {
+//   action: string;
+// }
+
+// export interface GatewayToMainDTO {
+
+// }
+
+// export interface GatewayToClientDTO {
+
+// }
+
+// export interface MainToGatewayDTO {
+
+// }

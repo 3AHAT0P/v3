@@ -1,12 +1,11 @@
-import { ActionFromClient, ActionToClient } from '@text-game/shared/APIGatewayShared';
-
-import { MessageQueue } from './MessageQueue';
+import { ActionToClient } from '@text-game/shared/APIGatewayShared';
 
 export interface ClientRecord {
   sessionId: string;
   userId: string;
-  recievedMessageQueue: MessageQueue<ActionFromClient>;
   sendMessage: (message: ActionToClient) => Promise<void>;
   userState: any;
-  currentNode: string;
+  handlers: Record<string, (userInfo: ClientRecord) => Promise<ActionToClient>>;
+  registerHandler(handlerId: string, handler: (userInfo: ClientRecord) => Promise<ActionToClient>): void;
+  clearHandlers(): void;
 }

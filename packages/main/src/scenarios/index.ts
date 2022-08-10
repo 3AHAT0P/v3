@@ -1,1 +1,1 @@
-export { run as handshakeScenarioRun } from './handshake';
+export * as handshakeScenarioHandlers from './handshake';
