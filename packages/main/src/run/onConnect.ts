@@ -2,11 +2,12 @@ import { ActionFromClient, ActionToClient } from '@text-game/shared/APIGatewaySh
 import { loginfo } from '@text-game/shared/Logger';
 
 import { ClientRecord } from '../ClientRecord';
-import { sendMessageToClient, subscribeMessageFromClient } from './InternalTransport/index';
-import { onMessageFromClient } from './onMessageFromClient';
-import { handshakeScenarioHandlers } from '../scenarios';
+import { sendMessageToClient, subscribeMessageFromClient } from '../InternalTransport/index';
+import { DynamicRouter } from '../DynamicRouter';
 
-const entrypoint = handshakeScenarioHandlers.greeting;
+import { onMessageFromClient } from './onMessageFromClient';
+
+const entrypoint = 'HANDSHAKE.GREETING';
 
 export const onConnect = async (clients: Map<ClientRecord['userId'], ClientRecord>, sessionId: string) => {
   loginfo('OnSystemMessage:onConnect', sessionId, 'CONNECTED');
@@ -18,14 +19,10 @@ export const onConnect = async (clients: Map<ClientRecord['userId'], ClientRecor
       return sendMessageToClient(sessionId, message);
     },
     userState: {},
-    handlers: {},
-    registerHandler(handlerId: string, handler: (userInfo: ClientRecord) => Promise<ActionToClient>) {
-      userInfo.handlers[handlerId] = handler;
-    },
-    clearHandlers() {
-      userInfo.handlers = {};
-    },
+    router: new DynamicRouter(),
   };
+
+  userInfo.router.register('1', entrypoint);
 
   await subscribeMessageFromClient(
     sessionId,
@@ -34,5 +31,5 @@ export const onConnect = async (clients: Map<ClientRecord['userId'], ClientRecor
 
   clients.set(sessionId, userInfo);
 
-  setTimeout(entrypoint, 10);
+  setTimeout(() => onMessageFromClient(userInfo, { action: '1' }), 10);
 };

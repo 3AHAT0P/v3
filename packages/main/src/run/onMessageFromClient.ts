@@ -6,11 +6,11 @@ import { ClientRecord } from '../ClientRecord';
 export const onMessageFromClient = async (userInfo: ClientRecord, clientMessage: ActionFromClient): Promise<void> => {
   loginfo('OnMessageFromClient', '[x] Received ', clientMessage);
 
-  if (clientMessage.action in userInfo.handlers) {
-    const message: ActionToClient = await userInfo.handlers[clientMessage.action](userInfo);
+  try {
+    const handler = userInfo.router.get(clientMessage.action);
+    const message: ActionToClient = await handler(userInfo);
     await userInfo.sendMessage(message);
-    return;
+  } catch (error) {
+    logerror('OnMessageFromClient', clientMessage);
   }
-
-  logerror('OnMessageFromClient', 'clientMessage.action is incorrect', clientMessage);
 };
