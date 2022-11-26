@@ -1,13 +1,22 @@
-export * from './greeting';
-export * from './returnToGreeting';
-export * from './showDonateLink';
-export * from './showMainContact';
-export * from './showDemoList';
+import { ScenarioHandler } from '../ScenarioHandler';
+import { RouteResolver } from '../RouteResolver';
 
-/*
-TODO:
-1) возможно проблема когда пользователь несколько раз нажал кнопку нак фронте
-1) Сейчас возможны утечки памяти - ???????
-1) каждый обработчик помимо вывода сообщения, может делать некоторую логику.
-  Сообщение же в своб очередь является концом действия. После сообщения идет выбор пользователя.
-*/
+import { greeting } from './greeting';
+import { returnToGreeting } from './returnToGreeting';
+import { showDonateLink } from './showDonateLink';
+import { showMainContact } from './showMainContact';
+import { showDemoList } from './showDemoList';
+
+const registry: Readonly<Record<string, ScenarioHandler>> = {
+  GREETING: greeting,
+  RETURN_TO_GREETING: returnToGreeting,
+  SHOW_DONATE_LINK: showDonateLink,
+  SHOW_MAIN_CONTACT: showMainContact,
+  SHOW_DEMO_LIST: showDemoList,
+};
+
+export const resolver: RouteResolver = (name: string): ScenarioHandler => {
+  if (name in registry) return registry[name];
+
+  throw new Error(`Handler name is incorrect (${name})`);
+};

@@ -7,10 +7,10 @@ export const onMessageFromClient = async (userInfo: ClientRecord, clientMessage:
   loginfo('OnMessageFromClient', '[x] Received ', clientMessage);
 
   try {
-    const handler = userInfo.router.get(clientMessage.action);
-    const message: ActionToClient = await handler(userInfo);
+    const [handler, params] = userInfo.router.get(clientMessage.action);
+    const message: ActionToClient = await handler(userInfo, params);
     await userInfo.sendMessage(message);
   } catch (error) {
-    logerror('OnMessageFromClient', clientMessage);
+    logerror('OnMessageFromClient', error, clientMessage);
   }
 };

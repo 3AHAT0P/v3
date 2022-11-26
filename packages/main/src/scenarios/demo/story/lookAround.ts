@@ -1,6 +1,8 @@
 import { logerror } from '@text-game/shared/Logger';
+
 import { buildMessage } from '../../_utils/buildMessage';
 import { ScenarioHandler } from '../../ScenarioHandler';
+
 import { finish } from './finish';
 
 export const lookAround: ScenarioHandler = async (userInfo) => {
@@ -11,7 +13,7 @@ export const lookAround: ScenarioHandler = async (userInfo) => {
   try {
     await userInfo.sendMessage(buildMessage(text, []));
   } catch (error) {
-    logerror('greeting', error);
+    logerror('Demo::story:lookAround', error);
   }
 
   return finish(userInfo);

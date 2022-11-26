@@ -13,7 +13,7 @@ export const chop: ScenarioHandler = async (userInfo) => {
     await userInfo.sendMessage(buildMessage(text1, []));
     await userInfo.sendMessage(buildMessage(text2, []));
   } catch (error) {
-    logerror('greeting', error);
+    logerror('Demo::story:chop', error);
   }
 
   return finish(userInfo);

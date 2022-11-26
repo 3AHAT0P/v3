@@ -1,19 +1,22 @@
 import { getScenarioHandler, ScenarioHandlerName } from './scenarios';
-import type { ScenarioHandler } from './scenarios/ScenarioHandler';
+import type { ScenarioHandler, ScenarioHandlerParams } from './scenarios/ScenarioHandler';
 
 export class DynamicRouter {
-  private _handlers: Record<string, ScenarioHandlerName> = {};
+  private _handlers: Record<string, [name: ScenarioHandlerName, params?: ScenarioHandlerParams]> = {};
 
-  public register(handlerId: string, handler: ScenarioHandlerName): void {
-    this._handlers[handlerId] = handler;
+  public register(handlerId: string, handler: ScenarioHandlerName, params?: ScenarioHandlerParams): void {
+    this._handlers[handlerId] = [handler, params];
   }
 
   public clear(): void {
     this._handlers = {};
   }
 
-  public get(handlerId: string): ScenarioHandler | never {
-    if (handlerId in this._handlers) return getScenarioHandler(this._handlers[handlerId]);
+  public get(handlerId: string): [handler: ScenarioHandler, params?: ScenarioHandlerParams] | never {
+    if (handlerId in this._handlers) {
+      const [name, params] = this._handlers[handlerId];
+      return [getScenarioHandler(name), params];
+    }
 
     throw new Error(
       'DynamicRouter::get - '

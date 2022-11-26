@@ -1,4 +1,6 @@
 import { ActionToClient } from '@text-game/shared/APIGatewayShared';
 import { ClientRecord } from '@/ClientRecord';
 
-export type ScenarioHandler = (userInfo: ClientRecord) => Promise<ActionToClient>;
+export type ScenarioHandlerParams = Record<string, any>;
+
+export type ScenarioHandler = (userInfo: ClientRecord, params?: ScenarioHandlerParams) => Promise<ActionToClient>;

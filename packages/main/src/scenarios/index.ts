@@ -1,25 +1,20 @@
-import { ScenarioHandler } from './ScenarioHandler';
-import * as handshakeScenarioHandlers from './handshake';
-import * as demoStoryHandlers from './demo/story';
+import type { ScenarioHandler } from './ScenarioHandler';
+import type { RouteResolver } from './RouteResolver';
 
-// const registry: Record<string, ScenarioHandler>;
-const registry = <const>{
-  'HANDSHAKE.GREETING': handshakeScenarioHandlers.greeting,
-  'HANDSHAKE.RETURN_TO_GREETING': handshakeScenarioHandlers.returnToGreeting,
-  'HANDSHAKE.SHOW_DONATE_LINK': handshakeScenarioHandlers.showDonateLink,
-  'HANDSHAKE.SHOW_MAIN_CONTACT': handshakeScenarioHandlers.showMainContact,
-  'HANDSHAKE.DEMO.SHOW_LIST': handshakeScenarioHandlers.showDemoList,
+import { resolver as handshakeResolver } from './handshake';
 
-  'DEMO.STORY.START': demoStoryHandlers.start,
-  'DEMO.STORY.TAKE_SWORD': demoStoryHandlers.takeSword,
-  'DEMO.STORY.CHOP': demoStoryHandlers.chop,
-  'DEMO.STORY.LOOK_AROUND': demoStoryHandlers.lookAround,
+import { resolver as demoResolver } from './demo';
+
+const registry: Readonly<Record<string, RouteResolver>> = {
+  HANDSHAKE: handshakeResolver,
+  DEMO: demoResolver,
 };
 
-export type ScenarioHandlerName = keyof typeof registry;
+export type ScenarioHandlerName = string;
 
-export const getScenarioHandler = (name: ScenarioHandlerName): ScenarioHandler => {
-  if (name in registry) return registry[name];
+export const getScenarioHandler = (fullname: ScenarioHandlerName): ScenarioHandler => {
+  const [name, ...otherNames] = fullname.split('.');
+  if (name in registry) return registry[name](...otherNames);
 
-  throw new Error('handler name is incorrect');
+  throw new Error(`Handler name is incorrect (${name})`);
 };
