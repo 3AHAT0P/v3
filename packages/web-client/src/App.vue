@@ -8,9 +8,13 @@ const systemMessageStore = useSystemMessageStore();
 <template>
   <div class="main">
     <div class="history">
-      <template v-for="(systemMessage, index) in systemMessageStore.messages" :key="systemMessage.text">
-        <span>{{ systemMessage.text }}</span>
-      </template>
+      <div class="message-list">
+        <template v-for="(systemMessage, index) in systemMessageStore.messages" :key="systemMessage.text">
+          <span
+            :class="{ message: true, latest: systemMessageStore.messages.length === index + 1 }"
+          >{{ systemMessage.text }}</span>
+        </template>
+      </div>
     </div>
     <div class="actions">
       <template v-for="(actions, index) in systemMessageStore.userActLayout" :key="index">
@@ -28,17 +32,50 @@ const systemMessageStore = useSystemMessageStore();
   width: 100%;
   height: 100%;
   gap: 16px;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 7fr 3fr;
+  grid-template-areas:
+    ". history ."
+    ". actions .";
+  padding: 32px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .history {
   display: grid;
   width: 100%;
   height: 100%;
-  grid-auto-flow: row;
-  grid-auto-rows: min-content;
-  place-items: end center;
-  place-content: end center;
   border-bottom: 1px solid hsl(0deg 0% 0% / 15%);
+  grid-area: history;
+  overflow: hidden;
+  align-items: end;
+}
+
+.message-list {
+  display: block;
+  width: 100%;
+  max-height: 100%;
+  border-bottom: 1px solid hsl(0deg 0% 0% / 15%);
+  overflow: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+.message {
+  white-space: pre-wrap;
+  text-indent: 2em;
+  border-top-style: dotted;
+  border-top-width: 2px;
+  border-color: hsl(128deg 100% 23% / 40%);
+  display: inline-block;
+  width: 100%;
+  animation: 2s appearing;
+  scroll-snap-stop: always;
+}
+
+.message.latest {
+  animation: 2s scrollTo, 2s appearing;
 }
 
 .actions {
@@ -50,6 +87,7 @@ const systemMessageStore = useSystemMessageStore();
   gap: 1em;
   place-items: center;
   place-content: start center;
+  grid-area: actions;
 }
 
 .action {
@@ -64,4 +102,23 @@ const systemMessageStore = useSystemMessageStore();
   background: hsl(0deg 0% 0% / 10%);
 }
 
+@keyframes appearing {
+  from {
+    background: hsl(57deg 100% 43% / 20%);
+  }
+
+  to {
+    background: hsl(57deg 100% 43% / 0%);
+  }
+}
+
+@keyframes scrollTo {
+  from {
+    scroll-snap-align: center;
+  }
+
+  to {
+    scroll-snap-align: none;
+  }
+}
 </style>

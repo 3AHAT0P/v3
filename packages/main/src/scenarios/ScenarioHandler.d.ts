@@ -1,5 +1,5 @@
-import { ActionToClient } from '@text-game/shared/APIGatewayShared';
-import { ClientRecord } from '@/ClientRecord';
+import type { ActionToClient } from '@text-game/shared/APIGatewayShared';
+import type { ClientRecord } from '@/ClientRecord';
 
 export type ScenarioHandlerParams = Record<string, any>;
 
